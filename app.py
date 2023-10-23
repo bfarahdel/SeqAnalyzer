@@ -1,3 +1,4 @@
+from Bio.Seq import Seq
 from io import StringIO
 import streamlit as st
 
@@ -13,14 +14,18 @@ def parse_record(file):
             sequence.append(line.strip())
     return {"info": info, "sequence": "".join(sequence)}
 
+# Transcription
+def transcribe(sequence):
+    dna = Seq(sequence)
+    return dna.transcribe()
+
 
 # Streamlit app
 def app():
-    st.title("Sequence Analyzer")
-    st.write("Upload a fasta file to analyze sequences.")
+    st.set_page_config(page_title="SeqAnalyzer", page_icon="🧬", layout="centered")
+    st.title("SeqAnalyzer")
     files = st.file_uploader("Upload a fasta file", accept_multiple_files=True)
 
-    # Display the sequence name of each file in a multi-select box
     if files:
         records = []
         for file in files:
@@ -29,11 +34,16 @@ def app():
         sequence_names.sort()
         selected_sequences = st.multiselect("Select sequences", sequence_names)
 
-        # Display the sequence names that were selected
-        if selected_sequences:
-            st.write("Selected sequences:")
-            for sequence in selected_sequences:
-                st.write(sequence)
+        # Transcription
+        if st.button("Transcription"):
+            if selected_sequences:
+                st.write("Transcription Results")
+                for record in records:
+                    expander = st.expander(label=record["info"])
+                    with expander:
+                        st.write(transcribe(record["sequence"]))
+            else:
+                st.write("Please select a sequence.")
 
 
 if __name__ == "__main__":
