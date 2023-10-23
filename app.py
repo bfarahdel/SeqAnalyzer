@@ -1,13 +1,17 @@
+from io import StringIO
 import streamlit as st
-from Bio import SeqIO
 
 
-# Function to parse fasta file and return sequence names
-def get_sequence_names(file):
-    sequence_names = []
-    for record in SeqIO.parse(file, "fasta"):
-        sequence_names.append(record.id)
-    return sequence_names
+# Parse records
+def parse_record(file):
+    stringio = StringIO(file.getvalue().decode("utf-8"))
+    sequence = []
+    for line in stringio:
+        if line.startswith(">"):
+            info = line[1:].strip()
+        else:
+            sequence.append(line.strip())
+    return {"info": info, "sequence": "".join(sequence)}
 
 
 # Streamlit app
@@ -18,10 +22,10 @@ def app():
 
     # Display the sequence name of each file in a multi-select box
     if files:
-        sequence_names = []
+        records = []
         for file in files:
-            sequence_names += get_sequence_names(file.name)
-        sequence_names = list(set(sequence_names))
+            records.append(parse_record(file))
+        sequence_names = [record["info"] for record in records]
         sequence_names.sort()
         selected_sequences = st.multiselect("Select sequences", sequence_names)
 
