@@ -14,6 +14,7 @@ def parse_record(file):
             sequence.append(line.strip())
     return {"info": info, "sequence": "".join(sequence)}
 
+
 # Transcription
 def transcribe(sequence):
     dna = Seq(sequence)
@@ -41,9 +42,11 @@ def app():
                 for record in records:
                     expander = st.expander(label=record["info"])
                     with expander:
-                        st.write(transcribe(record["sequence"]))
+                        mrna = transcribe(record["sequence"])
+                        st.download_button("Download", mrna)
+                        st.write(mrna)
             else:
-                st.write("Please select a sequence.")
+                st.write("Select sequence(s)")
 
 
 if __name__ == "__main__":
