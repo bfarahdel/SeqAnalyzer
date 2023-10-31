@@ -22,4 +22,4 @@ The transcription function returns the mRNA sequence of the provided DNA sequenc
 
 ## Translation
 
-The translation function returns the protein sequence of the provided DNA sequence. By default, translation will use the [standard genetic code](https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi#SG1) from NCBI. The translated protein sequence can be downloaded as a text file.
+The translation function returns the protein sequence of the provided DNA sequence. By default, translation will use the [standard genetic code](https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi#SG1) from NCBI. Stop codons are represented as asterisks in the translated sequence. The translated protein sequence can be downloaded as a text file.
