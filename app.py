@@ -41,9 +41,9 @@ def app():
                 st.write("Transcription Results")
                 for record in records:
                     expander = st.expander(label=record["info"])
+                    mrna = transcribe(record["sequence"])
                     with expander:
-                        mrna = transcribe(record["sequence"])
-                        st.download_button("Download", mrna)
+                        st.download_button("Download", str(mrna))
                         st.write(mrna)
             else:
                 st.write("Select sequence(s)")
