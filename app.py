@@ -50,10 +50,11 @@ def app():
                 if selected_sequences:
                     st.write("Transcription Results")
                     for record in records:
+                        record_info = record["info"]
                         expander = st.expander(label=record["info"])
                         mrna = transcribe(record["sequence"])
                         with expander:
-                            st.download_button("Download", str(mrna))
+                            st.download_button("Download", str(mrna), file_name=f"transcription_{record_info}.txt")
                             st.write(mrna)
                 else:
                     st.write("Select sequence(s)")
@@ -63,10 +64,11 @@ def app():
                 if selected_sequences:
                     st.write("Translation Results")
                     for record in records:
-                        expander = st.expander(label=record["info"])
+                        record_info = record["info"]
+                        expander = st.expander(label=record_info)
                         protein = translate(record["sequence"])
                         with expander:
-                            st.download_button("Download", str(protein))
+                            st.download_button("Download", str(protein), file_name=f"translation_{record_info}.txt")
                             st.write(protein)
                 else:
                     st.write("Select sequence(s)")
