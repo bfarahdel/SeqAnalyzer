@@ -39,31 +39,34 @@ def app():
         sequence_names.sort()
         selected_sequences = st.multiselect("Select sequences", sequence_names)
 
-        # Transcription
-        if st.button("Transcription"):
-            if selected_sequences:
-                st.write("Transcription Results")
-                for record in records:
-                    expander = st.expander(label=record["info"])
-                    mrna = transcribe(record["sequence"])
-                    with expander:
-                        st.download_button("Download", str(mrna))
-                        st.write(mrna)
-            else:
-                st.write("Select sequence(s)")
+        function = st.selectbox("Select an option", ["Transcription", "Translation"])
 
-        # Translation
-        if st.button("Translation"):
-            if selected_sequences:
-                st.write("Translation Results")
-                for record in records:
-                    expander = st.expander(label=record["info"])
-                    protein = translate(record["sequence"])
-                    with expander:
-                        st.download_button("Download", str(protein))
-                        st.write(protein)
-            else:
-                st.write("Select sequence(s)")
+        if st.button("Analyze"):
+            # Transcription
+            if function == "Transcription":
+                if selected_sequences:
+                    st.write("Transcription Results")
+                    for record in records:
+                        expander = st.expander(label=record["info"])
+                        mrna = transcribe(record["sequence"])
+                        with expander:
+                            st.download_button("Download", str(mrna))
+                            st.write(mrna)
+                else:
+                    st.write("Select sequence(s)")
+
+            # Translation
+            if function == "Translation":
+                if selected_sequences:
+                    st.write("Translation Results")
+                    for record in records:
+                        expander = st.expander(label=record["info"])
+                        protein = translate(record["sequence"])
+                        with expander:
+                            st.download_button("Download", str(protein))
+                            st.write(protein)
+                else:
+                    st.write("Select sequence(s)")
 
 
 
