@@ -20,6 +20,10 @@ def transcribe(sequence):
     dna = Seq(sequence)
     return dna.transcribe()
 
+def translate(sequence):
+    mrna = Seq(sequence)
+    return mrna.translate()
+
 
 # Streamlit app
 def app():
@@ -47,6 +51,20 @@ def app():
                         st.write(mrna)
             else:
                 st.write("Select sequence(s)")
+
+        # Translation
+        if st.button("Translation"):
+            if selected_sequences:
+                st.write("Translation Results")
+                for record in records:
+                    expander = st.expander(label=record["info"])
+                    protein = translate(record["sequence"])
+                    with expander:
+                        st.download_button("Download", str(protein))
+                        st.write(protein)
+            else:
+                st.write("Select sequence(s)")
+
 
 
 if __name__ == "__main__":
