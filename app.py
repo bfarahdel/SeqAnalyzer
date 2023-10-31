@@ -20,9 +20,10 @@ def transcribe(sequence):
     dna = Seq(sequence)
     return dna.transcribe()
 
+# Translation
 def translate(sequence):
-    mrna = Seq(sequence)
-    return mrna.translate()
+    dna = Seq(sequence)
+    return dna.translate()
 
 
 # Streamlit app
@@ -39,7 +40,9 @@ def app():
         sequence_names.sort()
         selected_sequences = st.multiselect("Select sequences", sequence_names)
 
-        function = st.selectbox("Select an option", ["Transcription", "Translation"])
+        functions = ["Transcription", "Translation"]
+        sorted_functions = sorted(functions)
+        function = st.selectbox("Select an option", sorted_functions)
 
         if st.button("Analyze"):
             # Transcription
