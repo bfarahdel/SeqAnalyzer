@@ -8,7 +8,7 @@ Website: https://seq-analyzer.streamlit.app/
 SeqAnalyzer is a web application that allows you to analyze and compare sequences in three steps:
 
 1. Provide sequences in [FASTA format](https://blast.ncbi.nlm.nih.gov/doc/blast-topics/)
-   - Example files from [NCBI](https://www.ncbi.nlm.nih.gov/) for Human coronavirus NL63 [GCF_000853865](example_files/GCF_000853865.fna) and SARS-CoV-2 [NC_045512](example_files/NC_045512.fasta) have been provided in the `example_files` directory of this repository
+   - Example files from [NCBI](https://www.ncbi.nlm.nih.gov/) for Human coronavirus NL63 [GCF_000853865](example_files/GCF_000853865.fna) and SARS-CoV-2 [NC_045512](example_files/NC_045512.fasta) have been provided in the [example_files](example_files) directory of this repository
 2. Select a function to be implemented on your sequence(s)
 3. Click the "Analyze" button to obtain your results
 
