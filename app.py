@@ -1,4 +1,5 @@
 from Bio.Seq import Seq
+from Bio.SeqRecord import SeqRecord
 from io import StringIO
 import streamlit as st
 
@@ -6,13 +7,16 @@ import streamlit as st
 # Parse records
 def parse_record(file):
     stringio = StringIO(file.getvalue().decode("utf-8"))
+    # get the first line of the file
+    info = stringio.readline().strip()[1:]
+    info_id = info.split("|")[0]
     sequence = []
     for line in stringio:
         if line.startswith(">"):
             info = line[1:].strip()
         else:
             sequence.append(line.strip())
-    return {"info": info, "sequence": "".join(sequence)}
+    return {"info": info, "id": info_id, "sequence": "".join(sequence)}
 
 
 # Transcription
@@ -53,8 +57,9 @@ def app():
                         record_info = record["info"]
                         expander = st.expander(label=record["info"])
                         mrna = transcribe(record["sequence"])
+                        mrna_fasta = SeqRecord(mrna, id=record["id"], description=record["info"].split("|")[1]).format("fasta")
                         with expander:
-                            st.download_button("Download", str(mrna), file_name=f"transcription_{record_info}.txt")
+                            st.download_button("Download", mrna_fasta, file_name=f"transcription_{record_info}.fasta")
                             st.write(mrna)
                 else:
                     st.write("Select sequence(s)")
@@ -67,8 +72,9 @@ def app():
                         record_info = record["info"]
                         expander = st.expander(label=record_info)
                         protein = translate(record["sequence"])
+                        protein_fasta = SeqRecord(protein, id=record["id"], description=record["info"].split("|")[1]).format("fasta")
                         with expander:
-                            st.download_button("Download", str(protein), file_name=f"translation_{record_info}.txt")
+                            st.download_button("Download", protein_fasta, file_name=f"translation_{record_info}.fasta")
                             st.write(protein)
                 else:
                     st.write("Select sequence(s)")
