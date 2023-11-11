@@ -20,7 +20,7 @@ class Analyze:
     def seq2fasta(self, sequence, info):
         """Convert sequence to fasta format"""
         seq = Seq(sequence)
-        seq_record = SeqRecord(seq, id=info, description=info.split("|")[1])
+        seq_record = SeqRecord(seq, id=info, description="")
         return seq_record.format("fasta")
 
     def transcribe(self, sequence):

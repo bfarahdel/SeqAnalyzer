@@ -1,13 +1,14 @@
 from analyze import Analyze
+from plot_analysis import PlotAnalysis
 import streamlit as st
 
 
-# Streamlit app
 def app():
     st.set_page_config(page_title="SeqAnalyzer", page_icon="🧬", layout="centered")
     st.title("SeqAnalyzer")
     files = st.file_uploader("Upload a fasta file", accept_multiple_files=True)
     analyze = Analyze()
+    plot_analysis = PlotAnalysis()
 
     if files:
         records = []
@@ -21,7 +22,7 @@ def app():
         sorted_functions = sorted(functions)
         function = st.selectbox("Select an option", sorted_functions)
 
-        if st.button("Analyze"):
+        if st.button("Analyze", use_container_width=True):
             # Transcription
             if function == "Transcription":
                 if selected_sequences:
@@ -37,7 +38,11 @@ def app():
                                 mrna_fasta,
                                 file_name=f"transcription_{record_info}.fasta",
                             )
-                            st.write(mrna)
+                            transcription_plot = plot_analysis.plot_sequences(
+                                [{"id": record_info, "seq": mrna}],
+                                method="transcription",
+                            )
+                            st.bokeh_chart(transcription_plot, use_container_width=True)
                 else:
                     st.write("Select sequence(s)")
 
@@ -56,7 +61,11 @@ def app():
                                 protein_fasta,
                                 file_name=f"translation_{record_info}.fasta",
                             )
-                            st.write(protein)
+                            translation_plot = plot_analysis.plot_sequences(
+                                [{"id": record_info, "seq": protein}],
+                                method="translation",
+                            )
+                            st.bokeh_chart(translation_plot, use_container_width=True)
                 else:
                     st.write("Select sequence(s)")
 
