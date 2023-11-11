@@ -1,33 +1,5 @@
-from Bio.Seq import Seq
-from Bio.SeqRecord import SeqRecord
-from io import StringIO
+from analyze import Analyze
 import streamlit as st
-
-
-# Parse records
-def parse_record(file):
-    stringio = StringIO(file.getvalue().decode("utf-8"))
-    # get the first line of the file
-    info = stringio.readline().strip()[1:]
-    info_id = info.split("|")[0]
-    sequence = []
-    for line in stringio:
-        if line.startswith(">"):
-            info = line[1:].strip()
-        else:
-            sequence.append(line.strip())
-    return {"info": info, "id": info_id, "sequence": "".join(sequence)}
-
-
-# Transcription
-def transcribe(sequence):
-    dna = Seq(sequence)
-    return dna.transcribe()
-
-# Translation
-def translate(sequence):
-    dna = Seq(sequence)
-    return dna.translate()
 
 
 # Streamlit app
@@ -35,11 +7,12 @@ def app():
     st.set_page_config(page_title="SeqAnalyzer", page_icon="🧬", layout="centered")
     st.title("SeqAnalyzer")
     files = st.file_uploader("Upload a fasta file", accept_multiple_files=True)
+    analyze = Analyze()
 
     if files:
         records = []
         for file in files:
-            records.append(parse_record(file))
+            records.append(analyze.parse_record(file))
         sequence_names = [record["info"] for record in records]
         sequence_names.sort()
         selected_sequences = st.multiselect("Select sequences", sequence_names)
@@ -56,10 +29,14 @@ def app():
                     for record in records:
                         record_info = record["info"]
                         expander = st.expander(label=record["info"])
-                        mrna = transcribe(record["sequence"])
-                        mrna_fasta = SeqRecord(mrna, id=record["id"], description=record["info"].split("|")[1]).format("fasta")
+                        mrna = analyze.transcribe(record["sequence"])
+                        mrna_fasta = analyze.seq2fasta(mrna, record["info"])
                         with expander:
-                            st.download_button("Download", mrna_fasta, file_name=f"transcription_{record_info}.fasta")
+                            st.download_button(
+                                "Download",
+                                mrna_fasta,
+                                file_name=f"transcription_{record_info}.fasta",
+                            )
                             st.write(mrna)
                 else:
                     st.write("Select sequence(s)")
@@ -71,14 +48,17 @@ def app():
                     for record in records:
                         record_info = record["info"]
                         expander = st.expander(label=record_info)
-                        protein = translate(record["sequence"])
-                        protein_fasta = SeqRecord(protein, id=record["id"], description=record["info"].split("|")[1]).format("fasta")
+                        protein = analyze.translate(record["sequence"])
+                        protein_fasta = analyze.seq2fasta(protein, record["info"])
                         with expander:
-                            st.download_button("Download", protein_fasta, file_name=f"translation_{record_info}.fasta")
+                            st.download_button(
+                                "Download",
+                                protein_fasta,
+                                file_name=f"translation_{record_info}.fasta",
+                            )
                             st.write(protein)
                 else:
                     st.write("Select sequence(s)")
-
 
 
 if __name__ == "__main__":
