@@ -11,23 +11,29 @@ def app():
     plot_analysis = PlotAnalysis()
 
     if files:
-        records = []
+        records = {}
         for file in files:
-            records.append(analyze.parse_record(file))
-        sequence_names = [record["info"] for record in records]
+            file_parsed = analyze.parse_record(file)
+            records[file_parsed["info"]] = file_parsed
+        sequence_names = list(records.keys())
         sequence_names.sort()
-        selected_sequences = st.multiselect("Select sequences", sequence_names)
+        selected_sequences = st.multiselect(
+            "Select sequences",
+            sequence_names,
+            placeholder="Select sequences to analyze",
+        )
 
         functions = ["Transcription", "Translation"]
         sorted_functions = sorted(functions)
-        function = st.selectbox("Select an option", sorted_functions)
+        function = st.selectbox("Select a function", sorted_functions)
 
         if st.button("Analyze", use_container_width=True):
             # Transcription
             if function == "Transcription":
                 if selected_sequences:
                     st.write("Transcription Results")
-                    for record in records:
+                    for selected in selected_sequences:
+                        record = records[selected]
                         record_info = record["info"]
                         expander = st.expander(label=record["info"])
                         mrna = analyze.transcribe(record["sequence"])
@@ -44,13 +50,14 @@ def app():
                             )
                             st.bokeh_chart(transcription_plot, use_container_width=True)
                 else:
-                    st.write("Select sequence(s)")
+                    st.write("No sequence(s) selected")
 
             # Translation
             if function == "Translation":
                 if selected_sequences:
                     st.write("Translation Results")
-                    for record in records:
+                    for selected in selected_sequences:
+                        record = records[selected]
                         record_info = record["info"]
                         expander = st.expander(label=record_info)
                         protein = analyze.translate(record["sequence"])
@@ -67,7 +74,7 @@ def app():
                             )
                             st.bokeh_chart(translation_plot, use_container_width=True)
                 else:
-                    st.write("Select sequence(s)")
+                    st.write("No sequence(s) selected")
 
 
 if __name__ == "__main__":
