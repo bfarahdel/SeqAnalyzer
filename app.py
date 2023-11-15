@@ -27,6 +27,10 @@ def app():
         sorted_analyses = sorted(analyses)
         analysis = st.selectbox("Select a method of analysis", sorted_analyses)
 
+        if analysis == "Translation":
+            to_stop = st.checkbox("Stop at first stop codon")
+
+        # Sequence Viewer
         if st.button("Analyze", use_container_width=True):
             if analysis == "Sequence Viewer":
                 if selected_sequences:
@@ -76,7 +80,7 @@ def app():
                         record = records[selected]
                         record_info = record["info"]
                         expander = st.expander(label=record_info)
-                        protein = analyze.translate(record["sequence"])
+                        protein = analyze.translate(record["sequence"], to_stop=to_stop)
                         protein_fasta = analyze.seq2fasta(protein, record["info"])
                         with expander:
                             st.download_button(
