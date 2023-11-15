@@ -28,7 +28,7 @@ class Analyze:
         dna = Seq(sequence)
         return dna.transcribe()
 
-    def translate(self, sequence):
+    def translate(self, sequence, to_stop=False):
         """Translate DNA to protein"""
         dna = Seq(sequence)
-        return dna.translate()
+        return dna.translate(to_stop=to_stop)
