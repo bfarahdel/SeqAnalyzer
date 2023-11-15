@@ -23,13 +23,29 @@ def app():
             placeholder="Select sequences to analyze",
         )
 
-        functions = ["Transcription", "Translation"]
-        sorted_functions = sorted(functions)
-        function = st.selectbox("Select a function", sorted_functions)
+        analyses = ["Sequence Viewer", "Transcription", "Translation"]
+        sorted_analyses = sorted(analyses)
+        analysis = st.selectbox("Select a method of analysis", sorted_analyses)
 
         if st.button("Analyze", use_container_width=True):
+            if analysis == "Sequence Viewer":
+                if selected_sequences:
+                    st.write("Sequence(s)")
+                    for selected in selected_sequences:
+                        record = records[selected]
+                        record_info = record["info"]
+                        expander = st.expander(label=record["info"])
+                        with expander:
+                            sequence_plot = plot_analysis.plot_sequences(
+                                [{"id": record_info, "seq": record["sequence"]}],
+                                method="standard",
+                            )
+                            st.bokeh_chart(sequence_plot, use_container_width=True)
+                else:
+                    st.write("No sequence(s) selected")
+
             # Transcription
-            if function == "Transcription":
+            if analysis == "Transcription":
                 if selected_sequences:
                     st.write("Transcription Results")
                     for selected in selected_sequences:
@@ -53,7 +69,7 @@ def app():
                     st.write("No sequence(s) selected")
 
             # Translation
-            if function == "Translation":
+            if analysis == "Translation":
                 if selected_sequences:
                     st.write("Translation Results")
                     for selected in selected_sequences:
