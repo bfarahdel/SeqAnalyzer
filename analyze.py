@@ -1,9 +1,17 @@
+from Bio import Align
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from io import StringIO
 
 
 class Analyze:
+    def pairwise_alignment(self, seq_1, seq_2):
+        """Perform pairwise alignment"""
+        aligner = Align.PairwiseAligner()
+        aligner.mode = "global"
+        alignments = aligner.align(seq_1, seq_2)
+        return alignments
+
     def parse_record(self, file):
         """Parse fasta file"""
         stringio = StringIO(file.getvalue().decode("utf-8"))
