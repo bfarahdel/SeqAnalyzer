@@ -23,15 +23,60 @@ def app():
             placeholder="Select sequences to analyze",
         )
 
-        analyses = ["Sequence Viewer", "Transcription", "Translation"]
+        analyses = [
+            "Pairwise Alignment",
+            "Sequence Viewer",
+            "Transcription",
+            "Translation",
+        ]
         sorted_analyses = sorted(analyses)
         analysis = st.selectbox("Select a method of analysis", sorted_analyses)
 
         if analysis == "Translation":
             to_stop = st.checkbox("Stop at first stop codon")
 
-        # Sequence Viewer
         if st.button("Analyze", use_container_width=True):
+            # Pairwise Alignment
+            if analysis == "Pairwise Alignment":
+                if len(selected_sequences) == 2:
+                    alignments = analyze.pairwise_alignment(
+                        records[selected_sequences[1]]["sequence"],
+                        records[selected_sequences[0]]["sequence"],
+                    )
+                    alignment = alignments[0]
+                    st.markdown("### Target Sequence")
+                    st.write(records[selected_sequences[0]]["info"])
+                    st.write(
+                        "The sequence length is",
+                        len(alignments[0].target),
+                    )
+                    st.markdown("### Query Sequence")
+                    st.write(records[selected_sequences[1]]["info"])
+                    st.write(
+                        "The sequence length is",
+                        len(alignments[0].query),
+                    )
+                    st.markdown("### Alignment")
+                    st.write("The alignment score is", alignments[0].score)
+                    alignment_plot = plot_analysis.plot_sequences(
+                        [
+                            {
+                                "id": records[selected_sequences[0]]["info"],
+                                "seq": alignment[0],
+                            },
+                            {
+                                "id": records[selected_sequences[1]]["info"],
+                                "seq": alignment[1],
+                            },
+                        ]
+                    )
+                    st.bokeh_chart(alignment_plot, use_container_width=True)
+                else:
+                    st.write("Select 2 sequences to perform pairwise alignment")
+            else:
+                st.write("No sequence(s) selected")
+
+            # Sequence Viewer
             if analysis == "Sequence Viewer":
                 if selected_sequences:
                     st.write("Sequence(s)")
