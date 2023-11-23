@@ -58,6 +58,20 @@ def app():
                     )
                     st.markdown("### Alignment")
                     st.write("The alignment score is", alignments[0].score)
+
+                    # Plot alignment
+                    mini_alignment_plot = plot_analysis.mini_plot_sequences(
+                        [
+                            {
+                                "id": records[selected_sequences[0]]["info"],
+                                "seq": alignment[0],
+                            },
+                            {
+                                "id": records[selected_sequences[1]]["info"],
+                                "seq": alignment[1],
+                            },
+                        ]
+                    )
                     alignment_plot = plot_analysis.plot_sequences(
                         [
                             {
@@ -70,6 +84,7 @@ def app():
                             },
                         ]
                     )
+                    st.bokeh_chart(mini_alignment_plot, use_container_width=True)
                     st.bokeh_chart(alignment_plot, use_container_width=True)
                 else:
                     st.write("Select 2 sequences to perform pairwise alignment")

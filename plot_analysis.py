@@ -80,7 +80,7 @@ class PlotAnalysis:
             dict(x=gx, y=gy, recty=recty, text=seq_str, colors=colors)
         )
         x_range = Range1d(0, N + 1, bounds="auto")
-        tools = "xwheel_zoom, reset, save"
+        tools = "reset, save"
 
         plt_seq = figure(
             title=None,
@@ -130,7 +130,7 @@ class PlotAnalysis:
         )
         plot_height = len(seqs) * 50 + 100
         view_range = (0, 50)
-        tools = "xpan, xwheel_zoom, reset, save"
+        tools = "xwheel_pan, xwheel_zoom, reset, save"
 
         plt_seq = figure(
             width=plot_width,
