@@ -88,13 +88,10 @@ def app():
                     st.bokeh_chart(alignment_plot, use_container_width=True)
                 else:
                     st.write("Select 2 sequences to perform pairwise alignment")
-            else:
-                st.write("No sequence(s) selected")
 
             # Sequence Viewer
             if analysis == "Sequence Viewer":
                 if selected_sequences:
-                    st.write("Sequence(s)")
                     for selected in selected_sequences:
                         record = records[selected]
                         record_info = record["info"]
@@ -105,13 +102,10 @@ def app():
                                 method="standard",
                             )
                             st.bokeh_chart(sequence_plot, use_container_width=True)
-                else:
-                    st.write("No sequence(s) selected")
 
             # Transcription
             if analysis == "Transcription":
                 if selected_sequences:
-                    st.write("Transcription Results")
                     for selected in selected_sequences:
                         record = records[selected]
                         record_info = record["info"]
@@ -129,13 +123,10 @@ def app():
                                 method="transcription",
                             )
                             st.bokeh_chart(transcription_plot, use_container_width=True)
-                else:
-                    st.write("No sequence(s) selected")
 
             # Translation
             if analysis == "Translation":
                 if selected_sequences:
-                    st.write("Translation Results")
                     for selected in selected_sequences:
                         record = records[selected]
                         record_info = record["info"]
@@ -153,8 +144,6 @@ def app():
                                 method="translation",
                             )
                             st.bokeh_chart(translation_plot, use_container_width=True)
-                else:
-                    st.write("No sequence(s) selected")
 
 
 if __name__ == "__main__":
