@@ -12,14 +12,18 @@ SeqAnalyzer is a web application that allows you to analyze and compare sequence
 2. Select a function to be implemented on your sequence(s)
 3. Click the "Analyze" button to obtain your results
 
-# Functions
+# Methods of Analysis
 
-SeqAnalyzer currently supports the following functions.
+SeqAnalyzer currently supports the following methods of analysis.
+
+## Pairwise Alignment
+
+Performs a global pairwise sequence alignment for two sequences and displays the results of the alignment with the highest similarity score. The sequence at the top of the alignment plot is the Target sequence, and the sequence at the bottom is the Query sequence.
 
 ## Transcription
 
-The transcription function returns the mRNA sequence of the provided DNA sequence. The transcribed mRNA sequence can be downloaded as a fasta file.
+Gives the mRNA sequence of the provided DNA sequence. The transcribed mRNA sequence can be downloaded as a FASTA file.
 
 ## Translation
 
-The translation function returns the protein sequence of the provided DNA sequence. By default, translation will use the [standard genetic code](https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi#SG1) from NCBI. Stop codons are represented as asterisks in the translated sequence. The translated protein sequence can be downloaded as a fasta file.
+Gives the protein sequence of the provided DNA sequence. By default, translation will use the [standard genetic code](https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi#SG1) from NCBI. Stop codons are represented as asterisks in the translated sequence. The translated protein sequence can be downloaded as a FASTA file.

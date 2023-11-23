@@ -6,7 +6,7 @@ import streamlit as st
 def app():
     st.set_page_config(page_title="SeqAnalyzer", page_icon="🧬", layout="centered")
     st.title("SeqAnalyzer")
-    files = st.file_uploader("Upload a fasta file", accept_multiple_files=True)
+    files = st.file_uploader("Upload a FASTA file", accept_multiple_files=True)
     analyze = Analyze()
     plot_analysis = PlotAnalysis()
 
