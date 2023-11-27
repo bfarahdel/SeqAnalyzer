@@ -130,7 +130,7 @@ class PlotAnalysis:
         )
         plot_height = len(seqs) * 50 + 100
         view_range = (0, 50)
-        tools = "xwheel_pan, xwheel_zoom, reset, save"
+        tools = "xwheel_pan, xpan, xwheel_zoom, reset, save"
 
         plt_seq = figure(
             width=plot_width,
